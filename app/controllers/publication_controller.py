@@ -39,7 +39,8 @@ def get_all_publication():
     output = list(Post.get_publication())
     for dict in output:
         dict.pop("_id")
-
+    if not output:
+        return {"error": "Requested resource does not exist."}, HTTPStatus.NOT_FOUND
     return jsonify(output), HTTPStatus.OK
 
 
