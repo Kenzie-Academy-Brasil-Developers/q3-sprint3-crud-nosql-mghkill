@@ -3,7 +3,9 @@ import pymongo
 
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 
-db = client["entrega09"]
+db = client["kenzie"]
+
+
 
 
 
@@ -23,41 +25,41 @@ class Post:
     def create_publication(self):
         data = self.__dict__
 
-        set_id = db.entrega09.find_one({"id": len(list(db.entrega09.find())) + 1})
+        set_id = db.posts.find_one({"id": len(list(db.posts.find())) + 1})
 
         # após delete, não deve repetir o id
 
         if not set_id:
-            data["id"] = len(list(db.entrega09.find())) + 1 
+            data["id"] = len(list(db.posts.find())) + 1 
 
-            db.entrega09.insert_one(data)
+            db.posts.insert_one(data)
         else:    
             count_id = 1
-            for item in list(db.entrega09.find()):
+            for item in list(db.posts.find()):
                 if item["id"] > 0:
                     count_id = item["id"]
             data["id"] = count_id + 2
 
-            db.entrega09.insert_one(data)
+            db.posts.insert_one(data)
             
     
     @staticmethod
     def get_publication():
-        return db.entrega09.find()
+        return db.posts.find()
 
     @staticmethod
     def update_publication(product_id: int, data: str):
 
-        db.entrega09.update_one({"id": product_id}, {"$set": data})
+        db.posts.update_one({"id": product_id}, {"$set": data})
 
-        return db.entrega09.find_one({"id": product_id})
+        return db.posts.find_one({"id": product_id})
     
     @staticmethod
     def delete_publication(product_id: int):
 
-        output = db.entrega09.find_one({"id": product_id})
+        output = db.posts.find_one({"id": product_id})
     
-        db.entrega09.delete_one({"id": product_id})
+        db.posts.delete_one({"id": product_id})
         
         return output
         
