@@ -1,6 +1,6 @@
 from venv import create
 import pymongo
-
+from datetime import datetime as dt
 client = pymongo.MongoClient("mongodb://localhost:27017/")
 
 db = client["kenzie"]
@@ -14,8 +14,8 @@ db = client["kenzie"]
 class Post:
     def __init__(self, **kwargs):
        
-        self.created_at = kwargs["created_at"]
-        self.updated_at = kwargs["updated_at"]
+        self.created_at = dt.now()
+        self.updated_at = dt.now()
         self.title = kwargs["title"]
         self.author = kwargs["author"]
         self.tags = kwargs["tags"]
@@ -50,6 +50,8 @@ class Post:
     @staticmethod
     def update_publication(product_id: int, data: str):
 
+        data["updated_at"] = dt.now()
+        
         db.posts.update_one({"id": product_id}, {"$set": data})
 
         return db.posts.find_one({"id": product_id})

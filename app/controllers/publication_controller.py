@@ -13,7 +13,7 @@ def register_one_publication():
 
     data = request.get_json()
 
-    allowed_list_keys = ["created_at", "updated_at", "title", "author", "tags", "content"]
+    allowed_list_keys = ["title", "author", "tags", "content"]
 
     try:
 
@@ -63,18 +63,17 @@ def update_one_publication(product_id):
 
     data = request.get_json()
     try:
-        if len(data) == 1:
             
-            allowed_list_keys = ["created_at", "updated_at", "title", "author", "tags", "content"]
+        allowed_list_keys = ["title", "author", "tags", "content"]
 
-            key_list = data.keys()
+        key_list = data.keys()
 
-            for item in key_list:
-                if item in allowed_list_keys:
-                
-                    output = Post.update_publication(product_id, data)
-                    output.pop("_id")
-                    return output, HTTPStatus.OK
+        for key in key_list:
+            if key in allowed_list_keys:
+            
+                output = Post.update_publication(product_id, data)
+                output.pop("_id")
+                return output, HTTPStatus.OK
 
         return {"error": "Requested resource does not exist."}, HTTPStatus.NOT_FOUND
     except AttributeError:
